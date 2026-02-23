@@ -23,37 +23,56 @@ let employees = [
 
 function calculateBasePay(rate, hours) {
     if (hours > 40) {
-        return (rate * 40).toFixed(2);
+        return basePay = (rate * 40).toFixed(2);
     } else {
-        return (rate * hours).toFixed(2);
+        return basePay =(rate * hours).toFixed(2);
     }
- }    
+ };   
  
- // Testing the base pay function with an employee.
- let basePay = calculateBasePay(employees[2].hourlyRate, employees[2].hoursWorked);
- console.log(`Base pay for ${employees[2].name} is $${basePay}`);
 
-
- function calculateOvertimePay(rate, hours) {
+// Function that calculates overtime pay for hours worked beyond 40 at 1.5 times the hourly rate.
+function calculateOvertimePay(rate, hours) {
     if (hours > 40) {
-        return (rate * 1.5 * (hours - 40)).toFixed(2);
+        return overtimePay =(rate * 1.5 * (hours - 40)).toFixed(2);
     } else {
         return 0;
     }
- }
-// Testing the overtime function and returning an employee's base, overtime, and gross pay.
-let overtimePay = calculateOvertimePay(employees[2].hourlyRate, employees[2].hoursWorked);
-let grossPay = (parseFloat(basePay) + parseFloat(overtimePay)).toFixed(2);
+ };
 
-console.log(`${employees[2].name}'s paycheck: \nBase pay: $${basePay} | Overtime pay $${overtimePay} | Gross pay: $${grossPay}`);
+// Function that calculates gross pay by summing base pay and overtime pay.
+function calculateGrossPay(basePay, overtimePay) {
+    return (parseFloat(basePay) + parseFloat(overtimePay)).toFixed(2);
+}
+
 
 // Function that deducts 15% tax from gross pay.
 let taxRate = 0.15;
-function calculateNetPay(grossPay) {
-    return (grossPay * (1 - taxRate)).toFixed(2);
+function calculateNetPay(fn) {
+    return (fn * (1 - taxRate)).toFixed(2);
+};
+
+
+// Function to process payroll that returns an object with: name, base pay, overtime pay, gross pay, and net pay.
+
+function processPayroll(employee) {
+    let basePay = calculateBasePay(employee.hourlyRate, employee.hoursWorked);
+    let overtimePay = calculateOvertimePay(employee.hourlyRate, employee.hoursWorked);
+    let grossPay = calculateGrossPay(basePay, overtimePay);
+    let netPay = calculateNetPay(grossPay);
+    
+    return {
+        name: employee.name,
+        basePay: basePay,
+        overtimePay: overtimePay,
+        grossPay: grossPay,
+        netPay: netPay
+    }
+}  
+// Testing the process payroll function with an employee. 
+console.log("Testing the processPayroll function with an employee:");
+console.log(processPayroll(employees[0]));
+
+console.log("\nProcessing payroll for all employees:");
+for (let employee of employees) {
+    console.log(processPayroll(employee));
 }
-let netPay = calculateNetPay(grossPay);
-
-// Checking that the net pay function works.
-console.log(`${employees[2].name}'s net pay is $${netPay} with a tax deduction of 15%`);
-
